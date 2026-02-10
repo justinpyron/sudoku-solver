@@ -62,3 +62,6 @@ Example format:
     # Parse and return the board
     response = json.loads(completion.choices[0].message.content)
     return response["board"]
+
+
+# TODO: Update to accept as input bytes instead of image path
