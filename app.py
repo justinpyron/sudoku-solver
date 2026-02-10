@@ -1,5 +1,7 @@
 import streamlit as st
 
+from ocr import extract_sudoku_board
+
 EMPTY = "."
 
 
@@ -82,14 +84,28 @@ st.set_page_config(
 )
 
 # --- Header ---
-st.title("Sudoku Solver")
+st.title("Sudoku Solver 🧩")
 st.caption("Snap a photo. Get the solution.")
 
 # --- Image uploader ---
 uploaded_file = st.file_uploader(
-    "Upload a puzzle screenshot",
+    "Upload a puzzle screenshot or photo",
     type=["png", "jpg", "jpeg"],
 )
 
 if uploaded_file is not None:
     st.image(uploaded_file, use_container_width=True)
+
+    if st.button("Extract", use_container_width=True):
+        with st.spinner("Reading puzzle..."):
+            image_bytes = uploaded_file.getvalue()
+            board = extract_sudoku_board(image_bytes)
+            print(board)
+            st.session_state.original_board = board
+
+# --- Display board ---
+if "original_board" in st.session_state:
+    st.markdown(
+        render_board_html(st.session_state.original_board),
+        unsafe_allow_html=True,
+    )
