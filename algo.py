@@ -1,3 +1,5 @@
+import copy
+
 EMPTY = "."
 
 
@@ -38,7 +40,7 @@ def solve_sudoku(board: list[list[str]]) -> list[list[str]]:
 
     def backtrack(row: int, col: int):
         if row == 9:
-            solutions.append(board[:])
+            solutions.append(copy.deepcopy(board))
             return
 
         # Skip if cell is already filled
