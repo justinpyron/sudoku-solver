@@ -99,12 +99,13 @@ uploaded_file = st.file_uploader(
 if uploaded_file is not None:
     st.image(uploaded_file, use_container_width=True)
 
-    if st.button("Extract", use_container_width=True):
+    # Run OCR automatically on upload (only if not already extracted)
+    if "original_board" not in st.session_state:
         with st.spinner("Reading puzzle..."):
             image_bytes = uploaded_file.getvalue()
             board = extract_sudoku_board(image_bytes)
-            print(board)
             st.session_state.original_board = board
+            st.rerun()
 
 # --- Display board ---
 if "solved_board" in st.session_state:
