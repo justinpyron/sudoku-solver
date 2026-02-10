@@ -3,7 +3,6 @@ import copy
 EMPTY = "."
 BOARD_SIZE = 9
 BOX_SIZE = 3
-DIGITS = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
 
 def get_box_index(i: int, j: int) -> int:
@@ -54,7 +53,7 @@ def solve_sudoku(board: list[list[str]]) -> list[list[str]]:
                 backtrack(row, col + 1)
             return
 
-        for k in DIGITS:
+        for k in ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
 
             # 1. Skip if not feasible
             if (
