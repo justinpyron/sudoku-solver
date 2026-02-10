@@ -1,5 +1,8 @@
+import copy
+
 import streamlit as st
 
+from algo import solve_sudoku
 from ocr import extract_sudoku_board
 
 EMPTY = "."
@@ -104,8 +107,25 @@ if uploaded_file is not None:
             st.session_state.original_board = board
 
 # --- Display board ---
-if "original_board" in st.session_state:
+if "solved_board" in st.session_state:
+    st.markdown(
+        render_board_html(
+            st.session_state.solved_board,
+            original_board=st.session_state.original_board,
+        ),
+        unsafe_allow_html=True,
+    )
+elif "original_board" in st.session_state:
     st.markdown(
         render_board_html(st.session_state.original_board),
         unsafe_allow_html=True,
     )
+
+    if st.button("Solve", use_container_width=True):
+        board_copy = copy.deepcopy(st.session_state.original_board)
+        solutions = solve_sudoku(board_copy)
+        if solutions:
+            st.session_state.solved_board = solutions[0]
+            st.rerun()
+        else:
+            st.error("No solution found. The extracted puzzle may contain errors.")
