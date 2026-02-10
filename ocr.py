@@ -5,19 +5,18 @@ import os
 from openai import OpenAI
 
 
-def extract_sudoku_board(image_path: str) -> list[list[str]]:
+def extract_sudoku_board(image_bytes: bytes) -> list[list[str]]:
     """
     Extract a 9x9 sudoku grid from an image using OpenAI's vision API.
 
     Args:
-        image_path: Path to the image file containing a sudoku board
+        image_bytes: Raw bytes of the image file containing a sudoku board
 
     Returns:
         A 9x9 array where each cell is a string (1-9 for filled cells, "." for empty cells)
     """
     # Encode image to base64
-    with open(image_path, "rb") as image_file:
-        base64_image = base64.b64encode(image_file.read()).decode("utf-8")
+    base64_image = base64.b64encode(image_bytes).decode("utf-8")
 
     # Initialize OpenAI client
     client = OpenAI(api_key=os.environ["OPENAI_API_KEY_DEFAULT"])
@@ -62,6 +61,3 @@ Example format:
     # Parse and return the board
     response = json.loads(completion.choices[0].message.content)
     return response["board"]
-
-
-# TODO: Update to accept as input bytes instead of image path
