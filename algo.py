@@ -3,7 +3,7 @@ import copy
 EMPTY = "."
 BOARD_SIZE = 9
 BOX_SIZE = 3
-DIGITS = ("1", "2", "3", "4", "5", "6", "7", "8", "9")
+DIGITS = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
 
 def get_box_index(i: int, j: int) -> int:
