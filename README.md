@@ -45,8 +45,26 @@ uv run streamlit run app.py
 
 ## Deployment
 
-Docker image builds from `Dockerfile` and runs on **Cloud Run** (port 8080). CI/CD via GitHub Actions:
+The app runs on **Google Cloud Run** via a GitHub Actions workflow.
 
-- **Trigger:** Manual (`workflow_dispatch`)
-- **Flow:** `uv export` → build image → push to Artifact Registry → deploy to Cloud Run
-- **Secrets:** `OPENAI_API_KEY_SUDOKU` must be set in GitHub and passed as an env var
+### Pipeline
+
+Triggered manually via `workflow_dispatch`:
+
+1. Export `requirements.txt` from `pyproject.toml` using `uv export`
+2. Build Docker image from `Dockerfile`
+3. Push image to Google Artifact Registry
+4. Deploy to Cloud Run
+
+### Configuration
+
+**Required GitHub secrets:**
+- `GCP_SA_KEY` - Service account credentials for GCP authentication
+- `OPENAI_API_KEY_SUDOKU` - Passed as environment variable to the app
+
+**Required GitHub variables:**
+- `GAR_LOCATION` - Artifact Registry location (e.g., `us-central1`)
+- `GCP_PROJECT_ID` - Google Cloud project ID
+- `GAR_REPOSITORY` - Artifact Registry repository name
+- `IMAGE_NAME` - Docker image name
+- `CLOUD_RUN_SERVICE` - Cloud Run service name
