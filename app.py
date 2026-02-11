@@ -30,9 +30,21 @@ def render_board_html(
         max-width: 400px;
         aspect-ratio: 1;
         font-family: 'SF Mono', 'Menlo', 'Consolas', monospace;
+        --cell-border: #d1d5db;
+        --box-border: #1f2937;
+        --given-color: #1a1a2e;
+        --solved-color: #2563eb;
+    }
+    @media (prefers-color-scheme: dark) {
+        table.sudoku {
+            --cell-border: #4b5563;
+            --box-border: #d1d5db;
+            --given-color: #f0f0f5;
+            --solved-color: #60a5fa;
+        }
     }
     table.sudoku td {
-        border: 1px solid #bbb;
+        border: 1px solid var(--cell-border);
         text-align: center;
         vertical-align: middle;
         font-size: clamp(1rem, 4vw, 1.6rem);
@@ -41,13 +53,13 @@ def render_board_html(
         aspect-ratio: 1;
     }
     /* Thick borders for 3x3 box separators */
-    table.sudoku td.box-right  { border-right:  2.5px solid #333; }
-    table.sudoku td.box-bottom { border-bottom: 2.5px solid #333; }
-    table.sudoku td.box-left   { border-left:   2.5px solid #333; }
-    table.sudoku td.box-top    { border-top:    2.5px solid #333; }
+    table.sudoku td.box-right  { border-right:  2.5px solid var(--box-border); }
+    table.sudoku td.box-bottom { border-bottom: 2.5px solid var(--box-border); }
+    table.sudoku td.box-left   { border-left:   2.5px solid var(--box-border); }
+    table.sudoku td.box-top    { border-top:    2.5px solid var(--box-border); }
     /* Cell styles */
-    table.sudoku td.given  { color: #111; font-weight: 700; }
-    table.sudoku td.solved { color: #2563eb; font-weight: 400; }
+    table.sudoku td.given  { color: var(--given-color); font-weight: 700; }
+    table.sudoku td.solved { color: var(--solved-color); font-weight: 400; }
     </style>
     """
     rows_html = ""
