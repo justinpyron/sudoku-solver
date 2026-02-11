@@ -4,6 +4,8 @@ import os
 
 from openai import OpenAI
 
+MODEL = "gpt-5.2"
+
 
 def extract_sudoku_board(image_bytes: bytes) -> list[list[str]]:
     """
@@ -38,7 +40,7 @@ Example format:
 
     # Call OpenAI API
     completion = client.chat.completions.create(
-        model="gpt-5.2",
+        model=MODEL,
         messages=[
             {
                 "role": "user",
