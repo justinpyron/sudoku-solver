@@ -97,7 +97,6 @@ uploaded_file = st.file_uploader(
 )
 
 if uploaded_file is not None:
-    st.image(uploaded_file, use_container_width=True)
 
     # Run OCR automatically on upload (only if not already extracted)
     if "original_board" not in st.session_state:
