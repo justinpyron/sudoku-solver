@@ -1,12 +1,12 @@
 # Sudoku Solver
 
-Upload a photo of a Sudoku puzzle—get the solution.
+A Streamlit web app that solves Sudoku puzzles from photos.
 
-## Features
-
-- **Photo → Solution**: Upload an image; the app extracts the puzzle via vision AI and solves it.
-- **Backtracking solver**: Fast constraint-propagation algorithm.
-- **Clear board view**: Given cells in bold, solved cells in blue.
+**How it works:**
+1. Upload an image of a puzzle
+2. OpenAI's vision API extracts the grid
+3. Backtracking solver computes the solution
+4. Display results: given cells in bold, solved cells in blue
 
 ## Quick Start
 
