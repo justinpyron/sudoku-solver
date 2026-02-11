@@ -10,16 +10,24 @@ Upload a photo of a Sudoku puzzle—get the solution.
 
 ## Quick Start
 
-**Prerequisites:** Python 3.12+, [uv](https://docs.astral.sh/uv/), and an OpenAI API key.
+**Prerequisites:** Python 3.12+ and an OpenAI API key.
+
+### Install uv
 
 ```bash
-# Clone and enter the repo
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+### Install Dependencies
+
+```bash
 cd sudoku-solver
-
-# Install dependencies
 uv sync
+```
 
-# Run the app (set your API key first)
+### Run the App
+
+```bash
 export OPENAI_API_KEY_SUDOKU=your-api-key
 uv run streamlit run app.py
 ```
