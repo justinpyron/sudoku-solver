@@ -100,11 +100,10 @@ st.set_page_config(
 
 # --- Header ---
 st.title("Sudoku Solver 🧩")
-st.caption("Snap a photo. Get the solution.")
 
 # --- Image uploader ---
 uploaded_file = st.file_uploader(
-    "Upload a puzzle screenshot or photo",
+    "Upload a photo of the Sudoku board to solve",
     type=["png", "jpg", "jpeg"],
 )
 
@@ -115,7 +114,7 @@ if uploaded_file is None:
 else:
     # Run OCR automatically on upload (only if not already extracted)
     if "original_board" not in st.session_state:
-        with st.spinner("Reading puzzle..."):
+        with st.spinner("Extracting Sudoku board..."):
             image_bytes = uploaded_file.getvalue()
             board = extract_sudoku_board(image_bytes)
             print(board)  # For debugging
