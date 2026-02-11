@@ -95,4 +95,4 @@ jobs:
             --allow-unauthenticated
             --description="Deployed from GitHub Actions - ${{ github.sha }}"
           env_vars: |
-            OPENAI_API_KEY_SEDOKU=${{ secrets.OPENAI_API_KEY_SEDOKU }}
+            OPENAI_API_KEY_SUDOKU=${{ secrets.OPENAI_API_KEY_SUDOKU }}
