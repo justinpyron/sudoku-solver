@@ -25,7 +25,7 @@ def render_board_html(
     <style>
     table.sudoku {
         border-collapse: collapse;
-        margin: 0 auto;
+        margin: 0 auto 1rem auto;
         width: 100%;
         max-width: 400px;
         aspect-ratio: 1;
