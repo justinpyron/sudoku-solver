@@ -1,12 +1,12 @@
 # Sudoku Solver
 
-A Streamlit web app that solves Sudoku puzzles from photos.
+A Streamlit web app that solves Sudoku puzzles from uploaded photos.
 
 **How it works:**
-1. Upload an image of a puzzle
+1. Upload an image of a sudoku board
 2. OpenAI's vision API extracts the grid
 3. Backtracking solver computes the solution
-4. Display results: given cells in bold, solved cells in blue
+4. Solved board displayed in the app
 
 ## Quick Start
 
