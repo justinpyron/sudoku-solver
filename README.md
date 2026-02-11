@@ -35,9 +35,9 @@ uv run streamlit run app.py
 ## Project Structure
 
 ```
-├── app.py                      # Streamlit UI: upload, display, solve
+├── app.py                      # Streamlit UI: upload, solve, display
 ├── algo.py                     # Backtracking solver
-├── ocr.py                      # Vision API extraction from image
+├── ocr.py                      # Extract grid via API call to AI model
 ├── Dockerfile                  # Cloud Run container config
 ├── .github/workflows/          # CI/CD pipeline
 └── pyproject.toml              # uv dependencies
