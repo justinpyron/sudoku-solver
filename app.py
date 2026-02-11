@@ -1,0 +1,165 @@
+import copy
+
+import streamlit as st
+
+from algo import solve_sudoku
+from ocr import extract_sudoku_board
+
+EMPTY = "."
+
+
+def render_board_html(
+    board: list[list[str]],
+    original_board: list[list[str]] | None = None,
+) -> str:
+    """
+    Render a sudoku board as an HTML table.
+
+    Args:
+        board: The 9x9 board to display.
+        original_board: If provided, cells that were empty in the original board
+            (i.e. solved cells) are styled in blue. Cells that were given are
+            styled in black/bold.
+    """
+    css = """
+    <style>
+    .sudoku-wrapper {
+        width: 100%;
+        max-width: 400px;
+        aspect-ratio: 1;
+        margin: -1rem auto 1rem auto;
+        --cell-border: #d1d5db;
+        --box-border: #1f2937;
+        --given-color: #1a1a2e;
+        --solved-color: #2563eb;
+    }
+    @media (prefers-color-scheme: dark) {
+        .sudoku-wrapper {
+            --cell-border: #4b5563;
+            --box-border: #d1d5db;
+            --given-color: #f0f0f5;
+            --solved-color: #60a5fa;
+        }
+    }
+    table.sudoku {
+        border-collapse: collapse;
+        table-layout: fixed;
+        width: 100%;
+        height: 100%;
+        font-family: 'SF Mono', 'Menlo', 'Consolas', monospace;
+    }
+    table.sudoku td {
+        border: 1px solid var(--cell-border);
+        text-align: center;
+        vertical-align: middle;
+        font-size: clamp(1rem, 4vw, 1.6rem);
+        padding: 0;
+    }
+    /* Thick borders for 3x3 box separators */
+    table.sudoku td.box-right  { border-right:  2.5px solid var(--box-border); }
+    table.sudoku td.box-bottom { border-bottom: 2.5px solid var(--box-border); }
+    table.sudoku td.box-left   { border-left:   2.5px solid var(--box-border); }
+    table.sudoku td.box-top    { border-top:    2.5px solid var(--box-border); }
+    /* Cell styles */
+    table.sudoku td.given  { color: var(--given-color); font-weight: 700; }
+    table.sudoku td.solved { color: var(--solved-color); font-weight: 400; }
+    </style>
+    """
+    rows_html = ""
+    for i in range(9):
+        cells = ""
+        for j in range(9):
+            value = board[i][j] if board[i][j] != EMPTY else ""
+
+            # CSS classes for thick box borders
+            classes = []
+            if j % 3 == 0:
+                classes.append("box-left")
+            if j % 3 == 2:
+                classes.append("box-right")
+            if i % 3 == 0:
+                classes.append("box-top")
+            if i % 3 == 2:
+                classes.append("box-bottom")
+
+            # Given vs solved styling
+            if original_board is not None and original_board[i][j] == EMPTY:
+                classes.append("solved")
+            else:
+                classes.append("given")
+
+            cls = " ".join(classes)
+            cells += f'<td class="{cls}">{value}</td>'
+        rows_html += f"<tr>{cells}</tr>"
+
+    return (
+        f'{css}<div class="sudoku-wrapper">'
+        f'<table class="sudoku">{rows_html}</table>'
+        f"</div>"
+    )
+
+
+st.set_page_config(
+    page_title="Sudoku Solver",
+    page_icon="🧩",
+    layout="centered",
+)
+
+# --- Header ---
+st.title("Sudoku Solver 🧩")
+
+WHAT_IS_THIS_APP = """
+Upload a photo of a sudoku puzzle, and this app will solve it for you.
+
+It uses GPT-5 to read the puzzle from your image, then solves it with a backtracking algorithm.
+Given numbers appear in **bold**, and solved numbers appear in blue.
+
+Source code 👉 [GitHub](https://github.com/justinpyron/sudoku-solver)
+"""
+
+with st.expander("What is this app?"):
+    st.markdown(WHAT_IS_THIS_APP)
+
+# --- Image uploader ---
+uploaded_file = st.file_uploader(
+    "Upload Sudoku board photo",
+    type=["png", "jpg", "jpeg"],
+)
+
+if uploaded_file is None:
+    # Clear all state when the user removes the uploaded file
+    st.session_state.pop("original_board", None)
+    st.session_state.pop("solved_board", None)
+else:
+    # Run OCR automatically on upload (only if not already extracted)
+    if "original_board" not in st.session_state:
+        with st.spinner("Extracting Sudoku board..."):
+            image_bytes = uploaded_file.getvalue()
+            board = extract_sudoku_board(image_bytes)
+            print(board)  # For debugging
+            st.session_state.original_board = board
+            st.rerun()
+
+# --- Display board ---
+if "solved_board" in st.session_state:
+    st.markdown(
+        render_board_html(
+            st.session_state.solved_board,
+            original_board=st.session_state.original_board,
+        ),
+        unsafe_allow_html=True,
+    )
+elif "original_board" in st.session_state:
+    st.markdown(
+        render_board_html(st.session_state.original_board),
+        unsafe_allow_html=True,
+    )
+
+    if st.button("Solve", use_container_width=True):
+        board_copy = copy.deepcopy(st.session_state.original_board)
+        solutions = solve_sudoku(board_copy)
+        if solutions:
+            st.session_state.solved_board = solutions[0]
+            st.rerun()
+        else:
+            st.error("No solution found. The extracted puzzle may contain errors.")
