@@ -23,25 +23,30 @@ def render_board_html(
     """
     css = """
     <style>
-    table.sudoku {
-        border-collapse: collapse;
-        margin: 0 auto 1rem auto;
+    .sudoku-wrapper {
         width: 100%;
         max-width: 400px;
         aspect-ratio: 1;
-        font-family: 'SF Mono', 'Menlo', 'Consolas', monospace;
+        margin: -1rem auto 1rem auto;
         --cell-border: #d1d5db;
         --box-border: #1f2937;
         --given-color: #1a1a2e;
         --solved-color: #2563eb;
     }
     @media (prefers-color-scheme: dark) {
-        table.sudoku {
+        .sudoku-wrapper {
             --cell-border: #4b5563;
             --box-border: #d1d5db;
             --given-color: #f0f0f5;
             --solved-color: #60a5fa;
         }
+    }
+    table.sudoku {
+        border-collapse: collapse;
+        table-layout: fixed;
+        width: 100%;
+        height: 100%;
+        font-family: 'SF Mono', 'Menlo', 'Consolas', monospace;
     }
     table.sudoku td {
         border: 1px solid var(--cell-border);
@@ -49,8 +54,6 @@ def render_board_html(
         vertical-align: middle;
         font-size: clamp(1rem, 4vw, 1.6rem);
         padding: 0;
-        width: 11.11%;
-        aspect-ratio: 1;
     }
     /* Thick borders for 3x3 box separators */
     table.sudoku td.box-right  { border-right:  2.5px solid var(--box-border); }
@@ -89,7 +92,11 @@ def render_board_html(
             cells += f'<td class="{cls}">{value}</td>'
         rows_html += f"<tr>{cells}</tr>"
 
-    return f'{css}<table class="sudoku">{rows_html}</table>'
+    return (
+        f'{css}<div class="sudoku-wrapper">'
+        f'<table class="sudoku">{rows_html}</table>'
+        f"</div>"
+    )
 
 
 st.set_page_config(
