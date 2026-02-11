@@ -4,9 +4,9 @@ A Streamlit web app that solves Sudoku puzzles from uploaded photos.
 
 **How it works:**
 1. Upload an image of a sudoku board
-2. OpenAI's vision API extracts the grid
+2. Sudoku grid extracted via API call to vision AI model
 3. Backtracking solver computes the solution
-4. Solved board displayed in the app
+4. Solution displayed in the app
 
 ## Quick Start
 
