@@ -21,7 +21,7 @@ def extract_sudoku_board(image_bytes: bytes) -> list[list[str]]:
     base64_image = base64.b64encode(image_bytes).decode("utf-8")
 
     # Initialize OpenAI client
-    client = OpenAI(api_key=os.environ["OPENAI_API_KEY_DEFAULT"])
+    client = OpenAI(api_key=os.environ["OPENAI_API_KEY_SEDOKU"])
 
     # Prompt for extracting sudoku grid
     prompt = """
