@@ -101,6 +101,19 @@ st.set_page_config(
 # --- Header ---
 st.title("Sudoku Solver 🧩")
 
+WHAT_IS_THIS_APP = """
+Upload a photo of a sudoku puzzle, and this app will solve it for you.
+
+It uses [GPT-5.2](https://openai.com/index/gpt-5/) vision to read the puzzle
+from your image, then solves it with a backtracking algorithm. Given numbers
+appear in **bold**, and solved numbers appear in blue.
+
+Source code 👉 [GitHub](https://github.com/justinpyron/sudoku-solver)
+"""
+
+with st.expander("What is this app?"):
+    st.markdown(WHAT_IS_THIS_APP)
+
 # --- Image uploader ---
 uploaded_file = st.file_uploader(
     "Upload a photo of the Sudoku board to solve",
